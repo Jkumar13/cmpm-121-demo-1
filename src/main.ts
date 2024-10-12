@@ -15,11 +15,17 @@ app.appendChild(button);
 
 let sparks = 0;
 
-const counterText = document.createElement("counterText")
+const counterText = document.createElement("counterText");
 counterText.textContent = "🔥Fire: " + sparks;
 app.appendChild(counterText);
 
-button.addEventListener('click', () => {
+function incrementCounter () {
     sparks += 1;
     counterText.textContent = "🔥Fire: " + sparks;
+}
+
+button.addEventListener("click", () => {
+    incrementCounter();
 });
+
+setInterval(incrementCounter, 1000);
