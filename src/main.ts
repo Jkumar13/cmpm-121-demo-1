@@ -19,13 +19,25 @@ const counterText = document.createElement("counterText");
 counterText.textContent = "🔥Fire: " + sparks;
 app.appendChild(counterText);
 
-function incrementCounter () {
-    sparks += 1;
-    counterText.textContent = "🔥Fire: " + sparks;
+function incrementCounter(int: number) {
+  sparks += int;
+  counterText.textContent = "🔥Fire: " + sparks;
 }
 
 button.addEventListener("click", () => {
-    incrementCounter();
+  incrementCounter(1);
 });
 
-setInterval(incrementCounter, 1000);
+let previousTime = 0;
+let exponentialCounter = 0;
+requestAnimationFrame(animate);
+
+function animate(currentTime: number) {
+    if (previousTime == 0) {
+        previousTime = currentTime;
+    }
+    let seconds = (currentTime - previousTime) / 1000;
+    exponentialCounter += seconds;
+    incrementCounter(exponentialCounter);
+    requestAnimationFrame(animate);
+}
