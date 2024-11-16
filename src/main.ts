@@ -10,17 +10,20 @@ header.innerHTML = gameName;
 app.append(header);
 
 let isPurchased = 0;
+let tenCost = 10;
+let hundredCost = 100;
+let thousandCost = 1000;
 
 const Ten = document.createElement("button");
-Ten.textContent = "+0.1 Growth (Costs 10🔥)";
+Ten.textContent = "+0.1 Growth (Costs " + tenCost + "🔥)";
 app.appendChild(Ten);
 
 const Hundred = document.createElement("button");
-Hundred.textContent = "+2.0 Growth (Costs 100🔥)";
+Hundred.textContent = "+2.0 Growth (Costs " + hundredCost + "🔥)";
 app.appendChild(Hundred);
 
 const Thousand = document.createElement("button");
-Thousand.textContent = "+50 Growth (Costs 1000🔥)";
+Thousand.textContent = "+50 Growth (Costs " + thousandCost + "🔥)";
 app.appendChild(Thousand);
 
 let sparks = 10;
@@ -38,7 +41,8 @@ setInterval(incrementCounterSimple, 1000);
 
 function incrementCounter(int: number) {
   sparks += int;
-  counterText.textContent = "🔥Fire: " + sparks.toFixed(0) + ", Growth: " + isPurchased.toFixed(1);
+  counterText.textContent =
+    "🔥Fire: " + sparks.toFixed(0) + ", Growth: " + isPurchased.toFixed(1);
 }
 // clickerButton.addEventListener("click", () => {
 //   incrementCounter(1);
@@ -48,32 +52,34 @@ let tenTrack = 0;
 let hundredTrack = 0;
 let thousandTrack = 0;
 Ten.addEventListener("click", () => {
-  if (sparks >= 10) {
-    sparks -= 10;
+  if (sparks >= tenCost) {
+    sparks -= tenCost;
     isPurchased += 0.1;
     tenTrack += 1;
-    Ten.textContent =
-      "+0.1 Growth (Costs 10🔥, " + tenTrack + " Purchased)";
+    tenCost *= 1.15;
+    Ten.textContent = "+0.1 Growth (Costs " + tenCost + "🔥, " + tenTrack + " Purchased)";
   }
   counterText.textContent = "🔥Fire: " + sparks;
 });
 Hundred.addEventListener("click", () => {
-  if (sparks >= 100) {
-    sparks -= 100;
+  if (sparks >= hundredCost) {
+    sparks -= hundredCost;
     isPurchased += 2;
     hundredTrack += 1;
+    hundredCost *= 1.15;
     Hundred.textContent =
-      "+2 Growth (Costs 10🔥, " + hundredTrack + " Purchased)";
+      "+2 Growth (Costs " + hundredCost + "🔥, " + hundredTrack + " Purchased)";
   }
   counterText.textContent = "🔥Fire: " + sparks;
 });
 Thousand.addEventListener("click", () => {
-  if (sparks >= 1000) {
-    sparks -= 1000;
+  if (sparks >= thousandCost) {
+    sparks -= thousandCost;
     isPurchased += 50;
     thousandTrack += 1;
+    thousandCost *= 1.15;
     Thousand.textContent =
-      "+50 Growth (Costs 10🔥, " + thousandTrack + " Purchased)";
+      "+50 Growth (Costs " + thousandCost + "🔥, " + thousandTrack + " Purchased)";
   }
   counterText.textContent = "🔥Fire: " + sparks;
 });
