@@ -7,9 +7,9 @@ document.title = gameName;
 
 const header = document.createElement("h1");
 header.innerHTML = gameName;
-header.style.width = "1280px";
-header.style.height = "125px";
-header.style.fontSize = "100px";
+header.style.width = "80rem";
+header.style.height = "5rem";
+header.style.fontSize = "4rem";
 header.style.background = "grey";
 app.append(header);
 
@@ -19,6 +19,7 @@ interface Item {
   rate: number;
   clickPower: number;
   description: string;
+  background: string;
 }
 
 const availableItems: Item[] = [
@@ -28,6 +29,7 @@ const availableItems: Item[] = [
     rate: 0.1,
     clickPower: 0,
     description: "Description: LIGHT A SPARK THAT STARTS A FIRE. +0.1 Growth",
+    background: 'yellow',
   },
   {
     name: "TORCH",
@@ -36,6 +38,7 @@ const availableItems: Item[] = [
     clickPower: 0,
     description:
       "Description: IGNITE A TORCH THAT LIGHTS AN INFERNO. +2 Growth",
+    background: 'green',
   },
   {
     name: "VOLCANO",
@@ -43,6 +46,7 @@ const availableItems: Item[] = [
     rate: 50,
     clickPower: 0,
     description: "Description: RELEASE THE VOLCANO!!!!! +50 Growth",
+    background: 'cyan',
   },
   {
     name: "CLICKFIRE",
@@ -51,6 +55,7 @@ const availableItems: Item[] = [
     clickPower: 5,
     description:
       "Description: BECOME THE CLICK APPRENTICE. +0.5 Growth / 5 Click",
+    background: 'purple',
   },
   {
     name: "SPAMFIRE",
@@ -59,8 +64,14 @@ const availableItems: Item[] = [
     clickPower: 25,
     description:
       "Description: BECOME THE CLICK MASTER!!!!! 5 Growth / +25 Click",
+    background: 'red',
   },
 ];
+
+function setButtonStyle(button: HTMLButtonElement, background: string, fontSize: string) {
+  button.style.background = background;
+  button.style.fontSize = fontSize;
+}
 
 let sparks = 0;
 let clickingPower = 1;
@@ -69,9 +80,9 @@ let isPurchased = 0;
 // clicker
 const clickerButton = document.createElement("button");
 clickerButton.textContent = "🔥";
-clickerButton.style.width = "1280px";
-clickerButton.style.height = "300px";
-clickerButton.style.fontSize = "100px";
+clickerButton.style.width = "40rem";
+clickerButton.style.height = "15rem";
+clickerButton.style.fontSize = "7rem";
 clickerButton.style.background = "yellow";
 app.appendChild(clickerButton);
 
@@ -95,12 +106,11 @@ clickerButton.addEventListener(
 const counterText = document.createElement("div");
 counterText.textContent = "🔥Fire: " + sparks;
 counterText.style.background = "orange";
-counterText.style.fontSize = "48px";
+counterText.style.fontSize = "2rem";
 app.appendChild(counterText);
 
 function incrementCounterSimple() {
   sparks += isPurchased;
-  counterText.textContent = "🔥Fire: " + sparks;
 }
 
 setInterval(incrementCounterSimple, 1000);
@@ -120,7 +130,6 @@ function incrementCounter(int: number) {
 // when clicking on button
 clickerButton.addEventListener("click", () => {
   incrementCounter(clickingPower);
-  counterText.textContent = "🔥Fire: " + sparks;
 });
 
 // refactored button logic
@@ -129,19 +138,8 @@ const itemButtons: { [key: string]: HTMLButtonElement } = {};
 // loop
 availableItems.forEach((item) => {
   const button = document.createElement("button");
-  // button.textContent = `${item.name} (Costs ${item.cost}🔥, +${item.rate} Growth, +${item.clickPower} Click Power)`;
-  button.textContent = `${item.name} (Costs ${item.cost.toFixed(1)}🔥)`;
-  button.style.fontSize = "33px";
-  button.style.background =
-    item.name === "SPARK"
-      ? "yellow"
-      : item.name === "TORCH"
-        ? "green"
-        : item.name === "CLICKFIRE"
-          ? "cyan"
-          : item.name === "SPAMFIRE"
-            ? "purple"
-            : "red";
+  setButtonStyle(button, item.background, "2rem");
+  button.textContent = `__________${item.name} (Costs ${item.cost.toFixed(1)}🔥)__________`;
   app.appendChild(button);
 
   itemButtons[item.name] = button;
@@ -149,22 +147,22 @@ availableItems.forEach((item) => {
   // refactored purchase logic
   button.addEventListener("click", () => {
     if (sparks >= item.cost) {
+      button.textContent = `____________________PURCHASED ITEM!____________________`;
       sparks -= item.cost;
       isPurchased += item.rate;
       clickingPower += item.clickPower;
       item.cost *= 1.15; // Increase cost for the next purchase
-      button.textContent = `${item.name} (Costs ${item.cost.toFixed(1)}🔥, +${item.rate} Growth, +${item.clickPower} Click Power)`;
-      button.textContent = `${item.name}`;
       counterText.textContent = "🔥Fire: " + sparks;
+    }
+    else {
+      button.textContent = `____________________CANNOT AFFORD____________________`;
     }
   });
   button.addEventListener("mouseenter", () => {
     button.textContent = `${item.description}`;
-    button.style.fontSize = "22px";
   });
   button.addEventListener("mouseleave", () => {
-    button.textContent = `${item.name} (Costs ${item.cost.toFixed(1)}🔥)`;
-    button.style.fontSize = "36px";
+    button.textContent = `__________${item.name} (Costs ${item.cost.toFixed(1)}🔥)__________`;
   });
 });
 
