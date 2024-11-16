@@ -1,1 +1,3 @@
-This is the starter code project for the `Demo 1` project in CMPM 121, Game Development Patterns, at UC Santa Cruz (fall quarter, 2024). Students should incrementally modify this project, tracking their progress with git, to develop an incremental game of their own unique design.
+FIRE CLICKER is a clicker game in which you must click the primary button to receive Sparks. Use Sparks to invest in passive upgrades that allow you to gain sparks over time without doing anything. Invest in other upgrades to make your clicking grant more sparks!
+
+https://ghaiby.github.io/cmpm-121-demo-1/ and https://tudoumi127.github.io/cmpm-121-demo-1/ were the projects I used for the D1.d assignment, and these projects inspired me to make some visual and player-convenience changes to my game.

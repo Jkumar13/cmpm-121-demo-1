@@ -4,13 +4,13 @@ const app: HTMLDivElement = document.querySelector("#app")!;
 
 const gameName = "🔥Fire Clicker🔥";
 document.title = gameName;
+document.body.style.backgroundImage = "sun.jpg";
 
 const header = document.createElement("h1");
 header.innerHTML = gameName;
 header.style.width = "80rem";
 header.style.height = "5rem";
 header.style.fontSize = "4rem";
-header.style.background = "grey";
 app.append(header);
 
 interface Item {
@@ -64,7 +64,7 @@ const availableItems: Item[] = [
     clickPower: 25,
     description:
       "Description: BECOME THE CLICK MASTER!!!!! 5 Growth / +25 Click",
-    background: 'red',
+    background: 'indigo',
   },
 ];
 
@@ -80,9 +80,9 @@ let isPurchased = 0;
 // clicker
 const clickerButton = document.createElement("button");
 clickerButton.textContent = "🔥";
-clickerButton.style.width = "40rem";
+clickerButton.style.width = "30rem";
 clickerButton.style.height = "15rem";
-clickerButton.style.fontSize = "7rem";
+clickerButton.style.fontSize = "5rem";
 clickerButton.style.background = "yellow";
 app.appendChild(clickerButton);
 
@@ -104,8 +104,6 @@ clickerButton.addEventListener(
 
 // display the counter
 const counterText = document.createElement("div");
-counterText.textContent = "🔥Fire: " + sparks;
-counterText.style.background = "orange";
 counterText.style.fontSize = "2rem";
 app.appendChild(counterText);
 
@@ -141,7 +139,6 @@ availableItems.forEach((item) => {
   setButtonStyle(button, item.background, "2rem");
   button.textContent = `__________${item.name} (Costs ${item.cost.toFixed(1)}🔥)__________`;
   app.appendChild(button);
-
   itemButtons[item.name] = button;
 
   // refactored purchase logic
@@ -159,9 +156,21 @@ availableItems.forEach((item) => {
     }
   });
   button.addEventListener("mouseenter", () => {
+    if (sparks >= item.cost) {
+      setButtonStyle(button, item.background, "2rem");
+    }
+    else {
+      setButtonStyle(button, "red", "2rem");
+    }
     button.textContent = `${item.description}`;
   });
   button.addEventListener("mouseleave", () => {
+    if (sparks >= item.cost) {
+      setButtonStyle(button, item.background, "2rem");
+    }
+    else {
+      setButtonStyle(button, "red", "2rem");
+    }
     button.textContent = `__________${item.name} (Costs ${item.cost.toFixed(1)}🔥)__________`;
   });
 });
