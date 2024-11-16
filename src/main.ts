@@ -13,20 +13,57 @@ header.style.fontSize = "100px";
 header.style.background = "grey";
 app.append(header);
 
-
 interface Item {
   name: string;
   cost: number;
   rate: number;
+  clickPower: number;
+  description: string;
 }
 
 const availableItems: Item[] = [
-  { name: "SPARK", cost: 10, rate: 0.1 },
-  { name: "TORCH", cost: 100, rate: 2 },
-  { name: "VOLCANO", cost: 1000, rate: 50 }
+  {
+    name: "SPARK",
+    cost: 10,
+    rate: 0.1,
+    clickPower: 0,
+    description: "Description: LIGHT A SPARK THAT STARTS A FIRE. +0.1 Growth",
+  },
+  {
+    name: "TORCH",
+    cost: 100,
+    rate: 2,
+    clickPower: 0,
+    description:
+      "Description: IGNITE A TORCH THAT LIGHTS AN INFERNO. +2 Growth",
+  },
+  {
+    name: "VOLCANO",
+    cost: 1000,
+    rate: 50,
+    clickPower: 0,
+    description: "Description: RELEASE THE VOLCANO!!!!! +50 Growth",
+  },
+  {
+    name: "CLICKFIRE",
+    cost: 150,
+    rate: 0.5,
+    clickPower: 5,
+    description:
+      "Description: BECOME THE CLICK APPRENTICE. +0.5 Growth / 5 Click",
+  },
+  {
+    name: "SPAMFIRE",
+    cost: 1500,
+    rate: 5,
+    clickPower: 25,
+    description:
+      "Description: BECOME THE CLICK MASTER!!!!! 5 Growth / +25 Click",
+  },
 ];
 
 let sparks = 0;
+let clickingPower = 1;
 let isPurchased = 0;
 
 // clicker
@@ -39,13 +76,19 @@ clickerButton.style.background = "yellow";
 app.appendChild(clickerButton);
 
 // hover over clicker
-clickerButton.addEventListener("mouseenter", function () {
+clickerButton.addEventListener(
+  "mouseenter",
+  function () {
     clickerButton.style.background = "orange";
-  }, false
+  },
+  false,
 );
-clickerButton.addEventListener( "mouseleave", function () {
+clickerButton.addEventListener(
+  "mouseleave",
+  function () {
     clickerButton.style.background = "yellow";
-  }, false
+  },
+  false,
 );
 
 // display the counter
@@ -65,12 +108,18 @@ setInterval(incrementCounterSimple, 1000);
 // increment function, ties to animate function below
 function incrementCounter(int: number) {
   sparks += int;
-  counterText.textContent = "______________🔥Fire: " + sparks.toFixed(0) + ", Growth: " + isPurchased.toFixed(1) + "______________";
+  counterText.textContent =
+    "🔥Fire: " +
+    sparks.toFixed(0) +
+    ", Growth: " +
+    isPurchased.toFixed(1) +
+    ", Clicking Power: " +
+    clickingPower;
 }
 
 // when clicking on button
 clickerButton.addEventListener("click", () => {
-  incrementCounter(1);
+  incrementCounter(clickingPower);
   counterText.textContent = "🔥Fire: " + sparks;
 });
 
@@ -80,9 +129,19 @@ const itemButtons: { [key: string]: HTMLButtonElement } = {};
 // loop
 availableItems.forEach((item) => {
   const button = document.createElement("button");
-  button.textContent = `${item.name} (Costs ${item.cost}🔥, +${item.rate} Growth)`;
-  button.style.fontSize = "24px";
-  button.style.background = item.name === "SPARK" ? "yellow" : item.name === "TORCH" ? "green" : "red";
+  // button.textContent = `${item.name} (Costs ${item.cost}🔥, +${item.rate} Growth, +${item.clickPower} Click Power)`;
+  button.textContent = `${item.name} (Costs ${item.cost.toFixed(1)}🔥)`;
+  button.style.fontSize = "33px";
+  button.style.background =
+    item.name === "SPARK"
+      ? "yellow"
+      : item.name === "TORCH"
+        ? "green"
+        : item.name === "CLICKFIRE"
+          ? "cyan"
+          : item.name === "SPAMFIRE"
+            ? "purple"
+            : "red";
   app.appendChild(button);
 
   itemButtons[item.name] = button;
@@ -92,10 +151,20 @@ availableItems.forEach((item) => {
     if (sparks >= item.cost) {
       sparks -= item.cost;
       isPurchased += item.rate;
+      clickingPower += item.clickPower;
       item.cost *= 1.15; // Increase cost for the next purchase
-      button.textContent = `${item.name} (Costs ${item.cost.toFixed(1)}🔥, +${item.rate} Growth)`;
+      button.textContent = `${item.name} (Costs ${item.cost.toFixed(1)}🔥, +${item.rate} Growth, +${item.clickPower} Click Power)`;
+      button.textContent = `${item.name}`;
       counterText.textContent = "🔥Fire: " + sparks;
     }
+  });
+  button.addEventListener("mouseenter", () => {
+    button.textContent = `${item.description}`;
+    button.style.fontSize = "22px";
+  });
+  button.addEventListener("mouseleave", () => {
+    button.textContent = `${item.name} (Costs ${item.cost.toFixed(1)}🔥)`;
+    button.style.fontSize = "36px";
   });
 });
 
